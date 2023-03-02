@@ -102,76 +102,78 @@ var questions = [
 
 
 
-      var ptsjoueur = 0;
-      var usedQuestions = [];
-      
-      function showRandomQuestion() {
-           
-        var reponsecorrect = -1;
-        //cacher le lancement du jeux 
-        document.getElementById("debutgame").style.display = "none";
-        document.getElementById("debutquestision").style.display = "block";
-        
+
+
+    var ptsjoueur = 0;
+    var usedQuestions = [];
+    var randomIndex;
+    var reponsecorrect = -1;
+    var questionsposer = 0;
+
+    function afficherquestion(){
+              //cacher le lancement du jeux 
+              document.getElementById("debutgame").style.display = "none";
+              document.getElementById("debutquestision").style.display = "block";
+
+              if(questions.length == questionsposer ){
+                alert("vous avez fait un score de "+ptsjoueur);
+              }
         // Sélectionner une question aléatoire
         var randomIndex;
         do {
             randomIndex = Math.floor(Math.random()  * questions.length);
         } while (usedQuestions.indexOf(randomIndex) !== -1);
-        
-        
+
         // Ajouter la question sélectionnée à la liste des questions utilisées
         usedQuestions.push(randomIndex);
-        
+
         // Afficher la question sélectionnée
         var question = questions[randomIndex];
         console.log(questions[randomIndex]);
         document.getElementById("question").innerHTML = question.question;
-        
+
         // Afficher les réponses
         for (var i = 0; i < question.answers.length; i++) {
-            var answerText = question.answers[i].text;
-            document.getElementById("reponse"+i).textContent = answerText;
-            if (question.answers[i].correct) {
-                reponsecorrect = i;
-            }
-        }
-               
-        var monBouton = document.getElementById("monBouton");
-    
-        // Ajoute un écouteur d'événements pour le clic sur le bouton
-        monBouton.addEventListener("click", function() {
-            // Code à exécuter lors du clic sur le bouton
-            var radios = document.querySelectorAll('input[name="answer"]');
-            var selectedValue =-1;
-           const  moinsun = -1;
-            for (var i = 0; i < radios.length; i++) {
-                if (radios[i].checked) {
-                    selectedValue = radios[i].value;
-                    break;
-                }
-            }
-                  
-            if (selectedValue === reponsecorrect) {
-             
-                console.log("vous avez sélectionné la  réponse "+selectedValue +" la reponse correcte est "+reponsecorrect);
-                console.log("vous avez sélectionné la bonne réponse ");
-                ptsjoueur += 100;
-                console.log(ptsjoueur);
-                selectedValue =-1;
-                showRandomQuestion();
-            } 
-                else if (selectedValue !== moinsun && selectedValue !== reponsecorrect) {
-                  console.log("vous avez sélectionné la  réponse "+selectedValue +" la reponse correcte est "+reponsecorrect);
-
-                   console.log("vous avez sélectionné la mauvaise reponse ");
-                   selectedValue =-1;
-                  showRandomQuestion();
-                    
-
-                } 
-              });
+          var answerText = question.answers[i].text;
+          console.log(answerText);
+          document.getElementById("reponse"+i).textContent = answerText;
+          if (question.answers[i].correct) {
+            console.log(i);
+              reponsecorrect = i;
+          }
+      }
     }
     
+
+    function verffrepones(){
+
+      questionsposer += 1 ;
+      // recuperer la valeur selectinnoer et la commparer avec la reponse correcte 
+      var radios = document.querySelectorAll('input[name="answer"]');
+      var selectedValue =1;
+     const  moinsun = -1;
+      for (var i = 0; i < radios.length; i++) {
+          if (radios[i].checked) {
+              selectedValue = radios[i].value;
+              break;
+          }
+      }
+      if (selectedValue == reponsecorrect) {
+       
+          console.log("vous avez sélectionné la  réponse "+selectedValue +" la reponse correcte est "+reponsecorrect);
+          console.log("vous avez sélectionné donc  la bonne réponse ");
+          ptsjoueur += 100;
+          console.log(ptsjoueur);
+          afficherquestion();
+      } 
+          else if (selectedValue !== moinsun && selectedValue !== reponsecorrect) {
+            console.log("vous avez sélectionné la  réponse "+selectedValue +" la reponse correcte est "+reponsecorrect);
+             console.log("vous avez sélectionné la mauvaise reponse ");
+             afficherquestion();
+
+          } 
+
+    }
       
 
       
